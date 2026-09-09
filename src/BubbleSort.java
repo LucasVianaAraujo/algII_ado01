@@ -1,12 +1,13 @@
+
 import javax.swing.JOptionPane;
 
 public class BubbleSort {
+
     public static void main(String[] args) {
         String[] nomes = new String[5];
         int[] senhas = new int[5];
         String[] arrayDeNomes = nomes;
         int[] arrayDeSenhas = senhas;
-
         int escolha;
         boolean loop = true;
 
@@ -78,7 +79,7 @@ public class BubbleSort {
 
         for (int i = 0; i < arrayNomes.length; i++) {
 
-            if (arrayNomes[i] != null) {
+            if (arrayNomes[i] != null && arraySenhas[i] != 0) {
 
                 dados += "Nome: " + arrayNomes[i] + " | Senha: " + arraySenhas[i] + "\n";
             }
@@ -136,20 +137,32 @@ public class BubbleSort {
         }
     }
 
-    // Elemento atual é maior que o próximo (dentro da tabela ASCII)? Se sim, troca
-    // a posição
     public static String[] ReorganizarNomes(String[] arrayDeNomes) {
         String aux = "";
+        String nome = null;
         for (int i = 0; i < arrayDeNomes.length; i++) {
             for (int j = 0; j < arrayDeNomes.length - 1; j++) {
-                if (arrayDeNomes[j] != null &&
-                        arrayDeNomes[j + 1] != null &&
-                        arrayDeNomes[j].compareTo(arrayDeNomes[j + 1]) > 0) {
+                if (arrayDeNomes[j] != null
+                        && arrayDeNomes[j + 1] != null
+                        && arrayDeNomes[j].compareTo(arrayDeNomes[j + 1]) > 0) {
                     aux = arrayDeNomes[j];
                     arrayDeNomes[j] = arrayDeNomes[j + 1];
                     arrayDeNomes[j + 1] = aux;
                 }
             }
+        }
+
+        for (int i = 0; i < arrayDeNomes.length; i++) {
+            if (arrayDeNomes[i] == null) {
+            } else {
+                nome += "Nome: " + arrayDeNomes[i] + "\n";
+            }
+
+        }
+        if (nome == null) {
+            JOptionPane.showMessageDialog(null, "Nenhum nome incontrado");
+        } else {
+            JOptionPane.showMessageDialog(null, nome);
         }
         return arrayDeNomes;
     }
@@ -157,6 +170,7 @@ public class BubbleSort {
     // Elemento atual é maior que o próximo? Se sim, troca a posição
     public static int[] ReorganizarSenhas(int[] array) {
         int aux = 0;
+        String senhasC = null;
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array.length - 1; j++) {
                 if (array[j] > array[j + 1]) {
@@ -166,6 +180,20 @@ public class BubbleSort {
                 }
             }
         }
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == 0) {
+            } else {
+                senhasC += "Senha :" + array[i] + "\n";
+            }
+
+        }
+
+        if (senhasC == null) {
+            JOptionPane.showMessageDialog(null, "Nenhuma senha Encontrada");
+        } else {
+            JOptionPane.showMessageDialog(null, senhasC);
+        }
+
         return array;
     }
 }
