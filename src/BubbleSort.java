@@ -1,12 +1,12 @@
 import javax.swing.JOptionPane;
 
 public class BubbleSort {
+
     public static void main(String[] args) {
         String[] nomes = new String[5];
         int[] senhas = new int[5];
         String[] arrayDeNomes = nomes;
         int[] arrayDeSenhas = senhas;
-
         int escolha;
         boolean loop = true;
 
@@ -18,21 +18,19 @@ public class BubbleSort {
                     InformarDados(nomes, senhas);
                     break;
                 case 2:
-                    int e = LeituraDeDados();
-                    if (e == 0) {
-                        JOptionPane.showMessageDialog(null, "Opção Inválida...\n");
-                    }
-                    LerDados(e, arrayDeNomes, arrayDeSenhas);
+                    LerDados(arrayDeNomes, arrayDeSenhas);
                     break;
                 case 3:
+                    BuscarNome(arrayDeNomes);
                     break;
                 case 4:
+                    BuscarSenha(arrayDeSenhas);
                     break;
                 case 5:
-                    arrayDeNomes = ReorganizarNomes(arrayDeNomes);
+                    arrayDeNomes = ReorganizarNomes(arrayDeNomes); // tratar
                     break;
                 case 6:
-                    arrayDeSenhas = ReorganizarSenhas(arrayDeSenhas);
+                    arrayDeSenhas = ReorganizarSenhas(arrayDeSenhas); // tratar
                     break;
                 case 7:
                     loop = false;
@@ -74,54 +72,117 @@ public class BubbleSort {
         }
     }
 
-    public static int LeituraDeDados() {
-        int escolha = Integer.parseInt(JOptionPane.showInputDialog("1 - Ler Nomes\n2 - Ler Senhas"));
-        if (escolha > 2 || escolha < 1) {
-            return 0;
+    public static void LerDados(String[] arrayNomes, int[] arraySenhas) {
+
+        String dados = "";
+
+        for (int i = 0; i < arrayNomes.length; i++) {
+
+            if (arrayNomes[i] != null && arraySenhas[i] == 0) {
+
+                dados += "Nome: " + arrayNomes[i] + "\n";
+            } else if (arrayNomes[i] == null && arraySenhas[i] != 0) {
+                dados += "Senha:" + arraySenhas[i] + "\n";
+            } else if (arrayNomes[i] == null && arraySenhas[i]  == 0 ){
+                
+                if (dados.length() == 0 ) {
+                    
+                    dados = "\n\n\n\n Nenhum dado cadastrado ";
+                }else{
+                    dados += "\n";
+                }
+                
+            }else{
+                dados += "Nome: " + arrayNomes[i] + " | Senha: " + arraySenhas[i] + "\n";
+            }
         }
-        return escolha;
+
+        if (dados.length() > 0) {
+            JOptionPane.showMessageDialog(null, dados);
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum dado encontrado!");
+        }
     }
 
-    public static void LerDados(int escolha, String[] arrayNomes, int[] arraySenhas) {
-        String nomes = "";
-        String senhas = "";
-        switch (escolha) {
-            case 1:
-                for (int i = 0; i < arrayNomes.length; i++) {
-                    senhas += arrayNomes[i] + "\n";
-                }
-                if (senhas.length() > 0) {
-                    JOptionPane.showMessageDialog(null, nomes);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Nenhum dado encontrado!");
-                }
-            case 2:
-                for (int i = 0; i < arraySenhas.length; i++) {
-                    nomes += arraySenhas[i];
-                }
-                if (nomes.length() > 0) {
-                    JOptionPane.showMessageDialog(null, senhas);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Nenhum dado encontrado!");
-                }
-            case 3:
-                for (int i = 0; i < arrayNomes.length; i++) {
-                    nomes += arrayNomes[i];
-                    JOptionPane.showMessageDialog(null, nomes);
-                }
-                for (int i = 0; i < arraySenhas.length; i++) {
-                    senhas += arraySenhas;
-                    JOptionPane.showMessageDialog(null, senhas);
-                }
+    public static void BuscarNome(String[] arrayDeNomes) {
+
+        String buscarNome = JOptionPane.showInputDialog(null, "Buscar nome:");
+
+        boolean encontrado = false;
+
+        for (int i = 0; i < arrayDeNomes.length; i++) {
+
+            if (arrayDeNomes[i] != null && arrayDeNomes[i].equalsIgnoreCase(buscarNome)) {
+                JOptionPane.showMessageDialog(null,
+                        "O nome:" + buscarNome + "foi encontrando na posição: " + "[" + i + "]");
+
+                encontrado = true;
                 break;
-            default:
-                JOptionPane.showMessageDialog(null, "Opção Inválida...\n");
+
+            }
         }
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(null, "O nome " + buscarNome + "não foi encontrado");
+        }
+    }
+
+    public static void BuscarSenha(int[] arrayDeSenhas) {
+
+        int buscarSenha = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite a senha:"));
+
+        boolean senhaEncontrada = false;
+
+        for (int i = 0; i < arrayDeSenhas.length; i++) {
+
+            if (arrayDeSenhas[i] == buscarSenha) {
+                JOptionPane.showMessageDialog(null,
+                        "A senha " + buscarSenha + "foi encontrada na posição" + "[" + i + "]");
+
+                senhaEncontrada = true;
+                break;
+            }
+        }
+
+        if (!senhaEncontrada) {
+            JOptionPane.showMessageDialog(null, "A senha " + buscarSenha + "não foi encontrada");
+        }
+    }
+
+    public static String[] ReorganizarNomes(String[] arrayDeNomes) {
+        String aux = "";
+        String nome = "";
+        for (int i = 0; i < arrayDeNomes.length; i++) {
+            for (int j = 0; j < arrayDeNomes.length - 1; j++) {
+                if (arrayDeNomes[j] != null
+                        && arrayDeNomes[j + 1] != null
+                        && arrayDeNomes[j].compareTo(arrayDeNomes[j + 1]) > 0) {
+                    aux = arrayDeNomes[j];
+                    arrayDeNomes[j] = arrayDeNomes[j + 1];
+                    arrayDeNomes[j + 1] = aux;
+                }
+            }
+        }
+
+        for (int i = 0; i < arrayDeNomes.length; i++) {
+            if (arrayDeNomes[i] == null) {
+            } else {
+                nome += "Nome: " + arrayDeNomes[i] + "\n";
+            }
+
+        }
+        if (nome.length() == 0) {
+            JOptionPane.showMessageDialog(null, "Nenhum nome incontrado");
+        } else {
+            JOptionPane.showMessageDialog(null, nome);
+        }
+        return arrayDeNomes;
     }
 
     // Elemento atual é maior que o próximo? Se sim, troca a posição
     public static int[] ReorganizarSenhas(int[] array) {
         int aux = 0;
+        String senhasC = "";
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array.length - 1; j++) {
                 if (array[j] > array[j + 1]) {
@@ -131,24 +192,21 @@ public class BubbleSort {
                 }
             }
         }
-        return array;
-    }
 
-    // Elemento atual é maior que o próximo (dentro da tabela ASCII)? Se sim, troca
-    // a posição
-    public static String[] ReorganizarNomes(String[] arrayDeNomes) {
-        String aux = "";
-        for (int i = 0; i < arrayDeNomes.length; i++) {
-            for (int j = 0; j < arrayDeNomes.length - 1; j++) {
-                if (arrayDeNomes[j] != null &&
-                        arrayDeNomes[j + 1] != null &&
-                        arrayDeNomes[j].compareTo(arrayDeNomes[j + 1]) > 0) {
-                    aux = arrayDeNomes[j];
-                    arrayDeNomes[j] = arrayDeNomes[j + 1];
-                    arrayDeNomes[j + 1] = aux;
-                }
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == 0) {
+            } else {
+                senhasC += "Senha :" + array[i] + "\n";
             }
+
         }
-        return arrayDeNomes;
+
+        if (senhasC.length() == 0) {
+            JOptionPane.showMessageDialog(null, "Nenhuma senha Encontrada");
+        } else {
+            JOptionPane.showMessageDialog(null, senhasC);
+        }
+
+        return array;
     }
 }
